@@ -17,12 +17,12 @@ class GameViewController: UIViewController {
     
     var score = 0
     var timer:Timer?
-    var seconds = 60
+    var timerSeconds = 25
+    var secondsRemaining = 25
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
         updateScoreLabel()
         updateNumberLabel()
         updateTimeLabel()
@@ -80,10 +80,10 @@ class GameViewController: UIViewController {
         
         if timer == nil {
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                if self.seconds == 0 {
+                if self.secondsRemaining == 0 {
                     self.finishGame()
-                } else if self.seconds <= 60 {
-                    self.seconds -= 1
+                } else {
+                    self.secondsRemaining -= 1
                     self.updateTimeLabel()
                 }
             }
@@ -93,8 +93,8 @@ class GameViewController: UIViewController {
     
     func updateTimeLabel() {
 
-        let min = (seconds / 60) % 60
-        let sec = seconds % 60
+        let min = (secondsRemaining / 60) % 60
+        let sec = secondsRemaining % 60
 
         timeLabel?.text = String(format: "%02d", min) + ":" + String(format: "%02d", sec)
     }
@@ -110,11 +110,12 @@ class GameViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
         score = 0
-        seconds = 60
+        secondsRemaining = timerSeconds
         
         updateTimeLabel()
         updateScoreLabel()
         updateNumberLabel()
+        inputField?.text = ""
     }
 }
 
